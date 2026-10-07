@@ -1,0 +1,24 @@
+/* App Fair branding. The app's own website/theme.css still has the final say. */
+:root { --appfair-brand: #0091ff; }
+.appfair-brand { display: inline-flex; align-items: center; gap: .65rem; color: var(--color-text); text-decoration: none; font-weight: 700; }
+.appfair-mark { display: inline-block; width: 2rem; height: 2rem; flex-shrink: 0; }
+.appfair-mark svg { width: 100%; height: 100%; }
+.appfair-nav { display: flex; gap: 1rem; align-items: center; margin-inline-start: .75rem; font-size: .875rem; }
+.appfair-nav a { color: var(--appfair-brand); text-decoration: none; }
+.appfair-nav a:hover { text-decoration: underline; }
+.appfair-footer { margin-block-start: 4rem; padding: 2rem 1rem; border-block-start: 1px solid var(--color-border-soft); background: var(--color-surface); }
+.appfair-footer-inner { max-width: 72rem; margin-inline: auto; display: flex; gap: 2rem; align-items: start; justify-content: space-between; }
+.appfair-footer p { max-width: 44rem; font-size: .875rem; color: var(--color-text-soft); margin-block-start: .75rem; }
+.appfair-footer a { color: var(--appfair-brand); }
+.appfair-footer-links { display: flex; gap: 1rem; padding-block-start: .5rem; white-space: nowrap; font-size: .875rem; }
+.appfair-article { max-width: 48rem; margin-inline: auto; }
+.appfair-article h1 { font-size: clamp(2rem, 6vw, 3rem); font-weight: 700; margin-block-end: 1rem; }
+.appfair-article h2 { font-size: 1.5rem; font-weight: 650; margin-block: 2rem 1rem; }
+.appfair-article p { margin-block: 1rem; line-height: 1.75; }
+.appfair-article a { color: var(--appfair-brand); }
+.appfair-posts { display: grid; gap: 1.5rem; margin-block-start: 2rem; }
+.appfair-posts article { padding: 1.5rem; border: 1px solid var(--color-border); border-radius: 1rem; background: var(--color-surface); }
+@media (max-width: 640px) {
+ .appfair-footer-inner { flex-direction: column; gap: 1rem; }
+ .appfair-nav { gap: .6rem; margin-inline-start: 0; }
+}

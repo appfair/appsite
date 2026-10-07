@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@daysite/components/Layout';
+import { loadSite } from 'daysite/data';
+import { localeLinksFor, localeIndexHref } from 'daysite/routes';
+import { res } from '../../../generated/resources.mjs';
+const data = await loadSite();
+const locale = data.locales.find((item) => item.code === 'en')!;
+const posts = (await getCollection('blog')).sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+const text = res.str(locale.code);
+---
+<Layout site={data.site} current={locale} localeLinks={localeLinksFor(data.locales, localeIndexHref)}
+  pagePath={`${import.meta.env.BASE_URL}en/blog/`} pageTitle={text.journal_link()}
+  pageDescription={posts[0]?.data.summary} favicons={data.favicons} vectorIcon={data.vectorIcon}>
+  <section class="appfair-article" data-appfair-blog>
+    <h1>{text.journal_link()}</h1>
+    <div class="appfair-posts">
+      {posts.map((post) => <article>
+        <h2><a href={`${import.meta.env.BASE_URL}en/blog/${post.id}/`}>{post.data.title}</a></h2>
+        <p>{post.data.summary}</p>
+      </article>)}
+    </div>
+  </section>
+</Layout>

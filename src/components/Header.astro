@@ -1,0 +1,18 @@
+---
+import DefaultHeader from 'daysite/components/Header.astro';
+import { res } from '../generated/resources.mjs';
+import type { HeaderProps } from 'daysite/customization-types';
+interface Props extends HeaderProps {}
+const props = Astro.props;
+const text = res.str(props.current.code);
+---
+<DefaultHeader {...props}>
+  <a slot="brand" href={props.localeHomeHref} class="appfair-brand" data-appfair-brand>
+    <span class="appfair-mark" aria-hidden="true" set:html={res.vectors.app_fair_logo()} />
+    <span>{props.siteTitleText}</span>
+  </a>
+  <nav slot="nav" class="appfair-nav">
+    <a href="https://appfair.net" data-appfair-catalog>{text.catalog_link()}</a>
+    <a href={`${import.meta.env.BASE_URL}en/blog/`} hreflang="en" data-appfair-journal>{text.journal_link()}</a>
+  </nav>
+</DefaultHeader>

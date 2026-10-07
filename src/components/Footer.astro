@@ -1,0 +1,25 @@
+---
+import { uiStrings } from 'daysite/uistrings';
+import { sanitizeDescription } from 'daysite/html';
+import { res } from '../generated/resources.mjs';
+import type { FooterProps } from 'daysite/customization-types';
+interface Props extends FooterProps {}
+const { site, locale, sourceURL, releaseURL } = Astro.props;
+const text = res.str(locale.code);
+const ui = uiStrings(locale.code);
+---
+<footer class="appfair-footer" data-appfair-footer>
+  <div class="appfair-footer-inner">
+    <div>
+      <a href="https://appfair.net" class="appfair-brand">
+        <span class="appfair-mark" aria-hidden="true" set:html={res.vectors.app_fair_logo()} />
+        <span>{text.brand_name()}</span>
+      </a>
+      <p set:html={sanitizeDescription(text.footer_information())} />
+    </div>
+    <div class="appfair-footer-links">
+      {site.showSourceLink !== false && sourceURL && <a href={sourceURL}>{ui.sourceLink}</a>}
+      {releaseURL && <a href={releaseURL}>{ui.releaseLink}</a>}
+    </div>
+  </div>
+</footer>

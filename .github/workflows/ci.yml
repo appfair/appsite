@@ -1,0 +1,47 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  website:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: appsite
+      - uses: actions/checkout@v7
+        with:
+          repository: daybrite/daysite
+          ref: main
+          path: daysite
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Install the renderer and theme from their lockfiles
+        run: |
+          npm ci --prefix daysite --no-audit --no-fund
+          npm ci --prefix appsite --no-audit --no-fund
+      - name: Check generated resources and theme tests
+        working-directory: appsite
+        run: npm test
+      - name: Create synthetic publication data
+        run: node daysite/scripts/create-fixture.mjs "$RUNNER_TEMP/publication"
+      - name: Check and build the independent Astro project
+        env:
+          DAYSITE_CONFIG: ${{ runner.temp }}/publication/website/site.toml
+          DAYSITE_THEME: ${{ github.workspace }}/appsite
+          DAYSITE_PUBLIC_DIR: ${{ runner.temp }}/publication/public
+          DAYSITE_OUT_DIR: ${{ runner.temp }}/publication/dist
+        run: |
+          node daysite/scripts/build-site.mjs check
+          node daysite/scripts/build-site.mjs build
+      - name: Exercise branding, Markdown blog, languages, downloads, gallery, and release channels
+        working-directory: daysite
+        run: |
+          npx playwright install --with-deps chromium
+          node scripts/check-customization.mjs "$RUNNER_TEMP/publication/dist" appfair
+          node scripts/check-portability.mjs "$RUNNER_TEMP/publication/dist"
